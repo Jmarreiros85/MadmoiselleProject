@@ -1,50 +1,159 @@
-// ==========================
-// GALLERY LIGHTBOX
-// ==========================
+// ==========================================
+// LIGHTBOX GALLERY
+// ==========================================
 
-const images = document.querySelectorAll(".gallery-img");
+const galleryItems = document.querySelectorAll(".gallery-item img");
+const lightbox = document.querySelector(".lightbox");
+const lightboxImg = lightbox.querySelector("img");
 
-// Criar lightbox
-const lightbox = document.createElement("div");
-lightbox.className = "lightbox";
-
-const lightboxImage = document.createElement("img");
-
-lightbox.appendChild(lightboxImage);
-
-document.body.appendChild(lightbox);
+let currentImage = 0;
 
 // Abrir imagem
-images.forEach(image => {
+galleryItems.forEach((img, index) => {
 
-    image.addEventListener("click", () => {
+    img.addEventListener("click", () => {
 
-        lightboxImage.src = image.src;
+        currentImage = index;
+
+        lightboxImg.src = img.src;
+        lightboxImg.alt = img.alt;
 
         lightbox.classList.add("open");
+
+        document.body.style.overflow = "hidden";
 
     });
 
 });
 
-// Fechar ao clicar fora
-lightbox.addEventListener("click", (e) => {
+// Fechar
+function closeLightbox(){
 
-    if (e.target !== lightboxImage) {
+    lightbox.classList.remove("open");
 
-        lightbox.classList.remove("open");
+    document.body.style.overflow = "";
+
+}
+
+lightbox.addEventListener("click",(e)=>{
+
+    if(e.target===lightbox){
+
+        closeLightbox();
 
     }
 
 });
 
-// Fechar com ESC
-document.addEventListener("keydown", (e) => {
+// ESC
 
-    if (e.key === "Escape") {
+document.addEventListener("keydown",(e)=>{
 
-        lightbox.classList.remove("open");
+    if(e.key==="Escape"){
+
+        closeLightbox();
 
     }
+
+});
+
+// ==========================================
+// IMAGEM SEGUINTE
+// ==========================================
+
+function nextImage(){
+
+    currentImage++;
+
+    if(currentImage>=galleryItems.length){
+
+        currentImage=0;
+
+    }
+
+    lightboxImg.src=galleryItems[currentImage].src;
+    lightboxImg.alt=galleryItems[currentImage].alt;
+
+}
+
+// ==========================================
+// IMAGEM ANTERIOR
+// ==========================================
+
+function prevImage(){
+
+    currentImage--;
+
+    if(currentImage<0){
+
+        currentImage=galleryItems.length-1;
+
+    }
+
+    lightboxImg.src=galleryItems[currentImage].src;
+    lightboxImg.alt=galleryItems[currentImage].alt;
+
+}
+
+// ==========================================
+// TECLADO
+// ==========================================
+
+document.addEventListener("keydown",(e)=>{
+
+    if(!lightbox.classList.contains("open")) return;
+
+    if(e.key==="ArrowRight"){
+
+        nextImage();
+
+    }
+
+    if(e.key==="ArrowLeft"){
+
+        prevImage();
+
+    }
+
+});
+
+// ==========================================
+// TOUCH (Swipe)
+// ==========================================
+
+let touchStartX = 0;
+let touchEndX = 0;
+
+lightbox.addEventListener("touchstart",(e)=>{
+
+    touchStartX=e.changedTouches[0].screenX;
+
+});
+
+lightbox.addEventListener("touchend",(e)=>{
+
+    touchEndX=e.changedTouches[0].screenX;
+
+    if(touchEndX-touchStartX>50){
+
+        prevImage();
+
+    }
+
+    if(touchStartX-touchEndX>50){
+
+        nextImage();
+
+    }
+
+});
+
+// ==========================================
+// DUPLO CLIQUE = FECHAR
+// ==========================================
+
+lightboxImg.addEventListener("dblclick",()=>{
+
+    closeLightbox();
 
 });

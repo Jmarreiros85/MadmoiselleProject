@@ -1,19 +1,20 @@
-// ==========================
+// ==========================================
 // CUSTOM CURSOR
-// ==========================
+// ==========================================
 
 const cursor = document.querySelector(".cursor");
 const cursorDot = document.querySelector(".cursor-dot");
 
-// Desativa em dispositivos táteis
-if (window.matchMedia("(pointer: fine)").matches && cursor && cursorDot) {
+// Se não existir cursor (ex.: mobile)
+if (cursor && cursorDot) {
 
     let mouseX = 0;
     let mouseY = 0;
 
-    let cursorX = 0;
-    let cursorY = 0;
+    let currentX = 0;
+    let currentY = 0;
 
+    // Atualiza posição do rato
     document.addEventListener("mousemove", (e) => {
 
         mouseX = e.clientX;
@@ -24,13 +25,14 @@ if (window.matchMedia("(pointer: fine)").matches && cursor && cursorDot) {
 
     });
 
+    // Movimento suave do círculo
     function animateCursor() {
 
-        cursorX += (mouseX - cursorX) * 0.15;
-        cursorY += (mouseY - cursorY) * 0.15;
+        currentX += (mouseX - currentX) * 0.15;
+        currentY += (mouseY - currentY) * 0.15;
 
-        cursor.style.left = cursorX + "px";
-        cursor.style.top = cursorY + "px";
+        cursor.style.left = currentX + "px";
+        cursor.style.top = currentY + "px";
 
         requestAnimationFrame(animateCursor);
 
@@ -38,37 +40,44 @@ if (window.matchMedia("(pointer: fine)").matches && cursor && cursorDot) {
 
     animateCursor();
 
-    // Efeito hover
-    const hoverElements = document.querySelectorAll(
-        "a, button, .btn, .gallery-img, .projects article, .service"
+    // Elementos interativos
+    const interactiveElements = document.querySelectorAll(
+        "a, button, .btn, .project-card, .service-card, .gallery-item"
     );
 
-    hoverElements.forEach((element) => {
+    interactiveElements.forEach(item => {
 
-        element.addEventListener("mouseenter", () => {
+        item.addEventListener("mouseenter", () => {
 
-            cursor.style.width = "70px";
-            cursor.style.height = "70px";
-            cursor.style.borderColor = "#b58c5a";
-            cursor.style.background = "rgba(181,140,90,0.15)";
+            cursor.style.width = "60px";
+            cursor.style.height = "60px";
+            cursor.style.borderColor = "#BF6F89";
 
         });
 
-        element.addEventListener("mouseleave", () => {
+        item.addEventListener("mouseleave", () => {
 
-            cursor.style.width = "35px";
-            cursor.style.height = "35px";
-            cursor.style.borderColor = "#222";
-            cursor.style.background = "transparent";
+            cursor.style.width = "34px";
+            cursor.style.height = "34px";
+            cursor.style.borderColor = "#D98AA3";
 
         });
 
     });
 
-} else {
+    // Cursor sai da janela
+    document.addEventListener("mouseleave", () => {
 
-    // Esconde o cursor personalizado em dispositivos táteis
-    if (cursor) cursor.style.display = "none";
-    if (cursorDot) cursorDot.style.display = "none";
+        cursor.style.opacity = "0";
+        cursorDot.style.opacity = "0";
+
+    });
+
+    document.addEventListener("mouseenter", () => {
+
+        cursor.style.opacity = "1";
+        cursorDot.style.opacity = "1";
+
+    });
 
 }
