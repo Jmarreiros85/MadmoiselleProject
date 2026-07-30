@@ -3,17 +3,35 @@
 // ==========================
 
 const menuBtn = document.getElementById("menuBtn");
-const menu = document.getElementById("menu");
+const nav = document.getElementById("nav");
 
-if (menuBtn && menu) {
+menuBtn.addEventListener("click", () => {
 
-    menuBtn.addEventListener("click", () => {
+    nav.classList.toggle("show");
 
-        menu.classList.toggle("show");
+    if(nav.classList.contains("show")){
+
+        menuBtn.innerHTML = "✕";
+
+    }else{
+
+        menuBtn.innerHTML = "☰";
+
+    }
+
+});
+
+document.querySelectorAll("#nav a").forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        nav.classList.remove("show");
+
+        menuBtn.innerHTML = "☰";
 
     });
 
-}
+});
 
 // ==========================
 // HEADER AO FAZER SCROLL

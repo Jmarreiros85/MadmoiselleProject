@@ -1468,8 +1468,6 @@ footer{
 
         display:block;
 
-        z-index:1001;
-
     }
 
     nav{
@@ -1482,21 +1480,11 @@ footer{
 
         width:280px;
 
-        max-width:80%;
-
         height:100vh;
 
-        background:white;
+        background:#fff;
 
-        display:flex;
-
-        justify-content:center;
-
-        align-items:center;
-
-        transition:.35s ease;
-
-        box-shadow:-10px 0 35px rgba(0,0,0,.12);
+        transition:.35s;
 
     }
 
@@ -1505,6 +1493,7 @@ footer{
         right:0;
 
     }
+
 
     nav ul{
 
